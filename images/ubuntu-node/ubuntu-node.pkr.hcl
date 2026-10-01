@@ -49,12 +49,18 @@ source "qemu" "ubuntu" {
   vm_name          = "${local.vm_name}.qcow2"
   format           = "qcow2"
   disk_size        = var.disk_size
+  disk_interface   = "virtio"
 
-  accelerator = var.accelerator
-  memory      = 4096
-  cpus        = 2
-  headless    = true
-  net_device   = "user"
+  accelerator         = var.accelerator
+  memory              = 4096
+  cpus                = 2
+  headless            = true
+  use_default_display = true
+  # User-mode networking is default when net_bridge is unset; net_device is the NIC model.
+  net_device = "virtio-net"
+
+  # Ubuntu cloud images boot via UEFI.
+  firmware = "efi"
 
   ssh_username           = "ubuntu"
   ssh_password           = "virtfoundry-build"
