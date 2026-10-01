@@ -9,6 +9,7 @@ IMAGE ?= ghcr.io/virtfoundry/node-ubuntu:$(KUBERNETES_VERSION)
 init:
 	packer init images/ubuntu-node/
 
+# Needs: packer qemu plugin, qemu-system, xorriso (cidata ISO).
 build-ubuntu-node: init
 	rm -rf $(OUT)
 	cd images/ubuntu-node && packer build \
