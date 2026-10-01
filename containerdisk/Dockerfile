@@ -1,5 +1,7 @@
-# ContainerDisk wrapper: KubeVirt pulls this OCI image and mounts /disk/*.qcow2.
-# Build context must contain the qcow2 at the path given by DISK_SRC (default).
-ARG DISK_SRC=ubuntu-node.qcow2
+# ContainerDisk for KubeVirt: single regular file under /disk/.
+# qemu user (107) owns the disk; do not COPY a directory tree here.
 FROM scratch
-COPY ${DISK_SRC} /disk/ubuntu-node.qcow2
+ARG DISK_SRC=ubuntu-node.qcow2
+# Redeclare ARG after FROM so build-arg is visible to COPY.
+ARG DISK_SRC
+COPY --chown=107:107 ${DISK_SRC} /disk/disk.img
