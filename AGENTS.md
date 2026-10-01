@@ -1,6 +1,6 @@
 # VirtFoundry vks-image-factory — Cursor / agents
 
-- Homelab for smoke; never Kind.
+- Smoke no **homelab Linux** (cluster real ou Kind/Linux com KubeVirt). **Não** Kind no macOS — KubeVirt não roda aí.
 - Conventional Commits: `feat(ubuntu-node)`, `ci(ubuntu-node)`, `docs`.
 - Prefer CI Packer on `ubuntu-latest` over local macOS QEMU for first green build.
 - Do not push `:latest`. Pin Kubernetes patch in image tag + digest in VF Template.
