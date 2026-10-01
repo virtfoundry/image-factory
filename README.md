@@ -78,7 +78,16 @@ make containerdisk-ubuntu-node  # docker build (no push)
 
 ## Pin policy
 
-- Kubernetes components: **single patch version** per image tag (MVP VKS: one version, e.g. `1.31.4`)
+**Always re-evaluate versions before pinning** — especially Kubernetes. Do not keep an old default because it was in the scaffold.
+
+Checklist (run when changing the pin or starting a build):
+
+1. `curl -fsSL https://dl.k8s.io/release/stable.txt` — current stable
+2. Confirm the patch exists on `pkgs.k8s.io` for that series
+3. Confirm CAPI + Kamaji (and any CNI) support that minor before VKS Phase 2+
+4. Write the chosen pin + **date checked** in the PR / release notes
+
+- Current scaffold default: **1.34.12** (checked 2026-10-01; stable.txt was `v1.37.1` — we pin a recent **1.34** patch until CAPI/Kamaji matrix is validated for newer minors)
 - Publish by **digest**; Templates must not float on `:latest`
 - Allowlist in VirtFoundry: add `ghcr.io/virtfoundry/` (chart/operator values)
 

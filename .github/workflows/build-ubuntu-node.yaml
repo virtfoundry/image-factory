@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
     inputs:
       kubernetes_version:
-        description: Kubernetes patch version (e.g. 1.31.4)
+        description: Kubernetes patch version (e.g. 1.34.12 — re-check stable.txt before dispatch)
         required: true
-        default: "1.31.4"
+        default: "1.34.12"
       push:
         description: Push containerDisk to GHCR
         type: boolean
@@ -25,7 +25,7 @@ permissions:
   packages: write
 
 env:
-  KUBERNETES_VERSION: ${{ inputs.kubernetes_version || '1.31.4' }}
+  KUBERNETES_VERSION: ${{ inputs.kubernetes_version || '1.34.12' }}
 
 jobs:
   packer:

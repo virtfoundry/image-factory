@@ -4,5 +4,8 @@
 - Conventional Commits: `feat(ubuntu-node)`, `ci(ubuntu-node)`, `docs`.
 - Prefer CI Packer on `ubuntu-latest` over local macOS QEMU for first green build.
 - Do not push `:latest`. Pin Kubernetes patch in image tag + digest in VF Template.
+- **Version discipline:** before every pin (especially Kubernetes), re-check
+  `https://dl.k8s.io/release/stable.txt` and what `pkgs.k8s.io` / CAPI / Kamaji
+  support *that week*. Do not keep stale defaults out of habit. Document pin + date checked.
 - Allowlist: `ghcr.io/virtfoundry/` must be added in helm/operator values before deploy.
 - VKS join/bootstrap is **out of scope** here (Phase 2+).
