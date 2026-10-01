@@ -1,0 +1,18 @@
+#cloud-config
+# Build-time only — image-factory Packer provisioner. Do not use as production user-data.
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    lock_passwd: false
+    plain_text_passwd: "virtfoundry-build"
+ssh_pwauth: true
+package_update: true
+packages:
+  - qemu-guest-agent
+  - curl
+  - ca-certificates
+  - apt-transport-https
+  - gnupg
+runcmd:
+  - systemctl enable --now qemu-guest-agent || true

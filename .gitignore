@@ -1,0 +1,6 @@
+out/
+*.qcow2
+containerdisk/ubuntu-node.qcow2
+.DS_Store
+packer_cache/
+crash.log
