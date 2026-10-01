@@ -1,5 +1,6 @@
 #cloud-config
 # Build-time only — image-factory Packer provisioner. Do not use as production user-data.
+# Keep packages minimal so SSH is up before apt finishes; install-k8s.sh waits on cloud-init.
 users:
   - name: ubuntu
     sudo: ALL=(ALL) NOPASSWD:ALL
@@ -11,12 +12,8 @@ chpasswd:
     ubuntu:virtfoundry-build
   expire: false
 ssh_pwauth: true
-package_update: true
+package_update: false
 packages:
   - qemu-guest-agent
-  - curl
-  - ca-certificates
-  - apt-transport-https
-  - gnupg
 runcmd:
   - systemctl enable --now qemu-guest-agent || true

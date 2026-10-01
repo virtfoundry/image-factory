@@ -9,6 +9,19 @@ K8S_SERIES="${KUBERNETES_VERSION%.*}"
 
 export DEBIAN_FRONTEND=noninteractive
 
+# cloud-init (package_update) often still holds apt when SSH first comes up.
+if command -v cloud-init >/dev/null 2>&1; then
+  cloud-init status --wait || true
+fi
+# Belt-and-suspenders: wait for apt/dpkg locks to clear.
+for _ in $(seq 1 60); do
+  if ! fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1 \
+    && ! fuser /var/lib/apt/lists/lock >/dev/null 2>&1; then
+    break
+  fi
+  sleep 5
+done
+
 # --- containerd ---
 apt-get update -y
 apt-get install -y containerd
