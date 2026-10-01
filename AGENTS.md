@@ -1,4 +1,4 @@
-# VirtFoundry image-factory — Cursor / agents
+# VirtFoundry vks-image-factory — Cursor / agents
 
 - Homelab for smoke; never Kind.
 - Conventional Commits: `feat(ubuntu-node)`, `ci(ubuntu-node)`, `docs`.
