@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 .PHONY: init build-ubuntu-node containerdisk-ubuntu-node clean
 
-KUBERNETES_VERSION ?= 1.34.12
+KUBERNETES_VERSION ?= 1.36.5
 OUT ?= out/ubuntu-node
 DISK ?= $(OUT)/vf-ubuntu-node-$(KUBERNETES_VERSION).qcow2
 IMAGE ?= ghcr.io/virtfoundry/node-ubuntu:$(KUBERNETES_VERSION)

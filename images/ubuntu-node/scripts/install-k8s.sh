@@ -3,8 +3,8 @@
 # Runs inside the Packer guest as root.
 set -euo pipefail
 
-KUBERNETES_VERSION="${KUBERNETES_VERSION:?set KUBERNETES_VERSION e.g. 1.34.12}"
-# apt packages use major.minor (e.g. 1.34)
+KUBERNETES_VERSION="${KUBERNETES_VERSION:?set KUBERNETES_VERSION e.g. 1.36.5}"
+# apt packages use major.minor (e.g. 1.36)
 K8S_SERIES="${KUBERNETES_VERSION%.*}"
 
 export DEBIAN_FRONTEND=noninteractive

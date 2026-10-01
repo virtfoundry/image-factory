@@ -78,18 +78,13 @@ make containerdisk-ubuntu-node  # docker build (no push)
 
 ## Pin policy
 
-**Always re-evaluate versions before pinning** — especially Kubernetes. Do not keep an old default because it was in the scaffold.
+See **[VERSIONS.md](./VERSIONS.md)** for the live evaluation checklist and snapshot.
 
-Checklist (run when changing the pin or starting a build):
+**Always re-evaluate** Kubernetes + CAPI + Kamaji before changing defaults. Homelab today is **1.36.x**; do not pin ancient minors.
 
-1. `curl -fsSL https://dl.k8s.io/release/stable.txt` — current stable
-2. Confirm the patch exists on `pkgs.k8s.io` for that series
-3. Confirm CAPI + Kamaji (and any CNI) support that minor before VKS Phase 2+
-4. Write the chosen pin + **date checked** in the PR / release notes
-
-- Current scaffold default: **1.34.12** (checked 2026-10-01; stable.txt was `v1.37.1` — we pin a recent **1.34** patch until CAPI/Kamaji matrix is validated for newer minors)
-- Publish by **digest**; Templates must not float on `:latest`
-- Allowlist in VirtFoundry: add `ghcr.io/virtfoundry/` (chart/operator values)
+- Default node image: **1.36.5** (2026-10-01)
+- Publish by **digest**; no `:latest`
+- Allowlist: `ghcr.io/virtfoundry/` in chart/operator values
 
 ## Homelab smoke (after first digest)
 

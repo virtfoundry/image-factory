@@ -12,7 +12,7 @@ packer {
 
 variable "kubernetes_version" {
   type    = string
-  default = "1.34.12"
+  default = "1.36.5"
 }
 
 variable "ubuntu_version" {
