@@ -1,4 +1,4 @@
-# VirtFoundry image-factory
+# VirtFoundry vks-image-factory
 
 Build and publish **KubeVirt containerDisk** images for VirtFoundry (IaaS guests and **VKS worker nodes**).
 
