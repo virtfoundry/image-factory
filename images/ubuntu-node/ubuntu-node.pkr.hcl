@@ -94,10 +94,8 @@ build {
   sources = ["source.qemu.ubuntu"]
 
   provisioner "shell" {
-    execute_command = "sudo -E bash '{{ .Path }}'"
-    environment_vars = [
-      "KUBERNETES_VERSION=${var.kubernetes_version}",
-    ]
+    # sudo -E alone still drops vars under Ubuntu env_reset; pass explicitly.
+    execute_command = "sudo env KUBERNETES_VERSION='${var.kubernetes_version}' bash '{{ .Path }}'"
     scripts = [
       "${path.root}/scripts/install-k8s.sh",
     ]
