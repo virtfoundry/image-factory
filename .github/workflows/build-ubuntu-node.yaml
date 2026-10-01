@@ -60,15 +60,30 @@ jobs:
           set -euo pipefail
           # Packer QEMU requires the output directory to NOT exist.
           rm -rf ../../out/ubuntu-node
-          ACCEL=kvm
-          if [ ! -e /dev/kvm ]; then
-            echo "No /dev/kvm — using accelerator=tcg (slow)"
-            ACCEL=tcg
+
+          # GHA often has /dev/kvm present but unusable (Permission denied).
+          ACCEL=tcg
+          if [ -c /dev/kvm ] && [ -r /dev/kvm ] && [ -w /dev/kvm ]; then
+            ACCEL=kvm
+          else
+            echo "No usable /dev/kvm — using accelerator=tcg (slow)"
           fi
+
+          # Prefer 4M OVMF; fall back to classic names on older packages.
+          EFI_CODE=/usr/share/OVMF/OVMF_CODE_4M.fd
+          EFI_VARS=/usr/share/OVMF/OVMF_VARS_4M.fd
+          if [ ! -f "$EFI_CODE" ]; then
+            EFI_CODE=/usr/share/OVMF/OVMF_CODE.fd
+            EFI_VARS=/usr/share/OVMF/OVMF_VARS.fd
+          fi
+          ls -la "$EFI_CODE" "$EFI_VARS"
+
           packer build \
             -var "kubernetes_version=${KUBERNETES_VERSION}" \
             -var "output_directory=../../out/ubuntu-node" \
             -var "accelerator=${ACCEL}" \
+            -var "efi_firmware_code=${EFI_CODE}" \
+            -var "efi_firmware_vars=${EFI_VARS}" \
             ubuntu-node.pkr.hcl
           ls -lh ../../out/ubuntu-node/
       - name: Upload qcow2 artifact
