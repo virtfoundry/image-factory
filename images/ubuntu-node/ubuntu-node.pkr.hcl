@@ -30,10 +30,21 @@ variable "output_directory" {
   default = "../../out/ubuntu-node"
 }
 
-# kvm (local/nested) or tcg (GitHub-hosted without /dev/kvm)
+# kvm (local/nested) or tcg (GitHub-hosted without usable /dev/kvm)
 variable "accelerator" {
   type    = string
   default = "kvm"
+}
+
+# Ubuntu OVMF paths (override on macOS/Homebrew if needed)
+variable "efi_firmware_code" {
+  type    = string
+  default = "/usr/share/OVMF/OVMF_CODE_4M.fd"
+}
+
+variable "efi_firmware_vars" {
+  type    = string
+  default = "/usr/share/OVMF/OVMF_VARS_4M.fd"
 }
 
 locals {
@@ -59,8 +70,10 @@ source "qemu" "ubuntu" {
   # User-mode networking is default when net_bridge is unset; net_device is the NIC model.
   net_device = "virtio-net"
 
-  # Ubuntu cloud images boot via UEFI.
-  firmware = "efi"
+  # Ubuntu cloud images boot via UEFI (do not use firmware="efi" — Packer passes it as -bios).
+  efi_boot          = true
+  efi_firmware_code = var.efi_firmware_code
+  efi_firmware_vars = var.efi_firmware_vars
 
   ssh_username           = "ubuntu"
   ssh_password           = "virtfoundry-build"
