@@ -15,11 +15,6 @@ variable "kubernetes_version" {
   default = "1.36.5"
 }
 
-variable "ubuntu_version" {
-  type    = string
-  default = "24.04"
-}
-
 variable "ubuntu_img_url" {
   type    = string
   default = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-24.04-server-cloudimg-amd64.img"
@@ -35,39 +30,45 @@ variable "output_directory" {
   default = "../../out/ubuntu-node"
 }
 
+# kvm (local/nested) or tcg (GitHub-hosted without /dev/kvm)
+variable "accelerator" {
+  type    = string
+  default = "kvm"
+}
+
 locals {
   vm_name = "vf-ubuntu-node-${var.kubernetes_version}"
 }
 
 source "qemu" "ubuntu" {
   iso_url      = var.ubuntu_img_url
-  # SHA256SUMS on cloud-images; packer resolves the matching filename.
   iso_checksum = "file:https://cloud-images.ubuntu.com/releases/24.04/release/SHA256SUMS"
-  # Cloud images are disks, not install ISOs.
-  disk_image = true
+  disk_image   = true
 
   output_directory = var.output_directory
   vm_name          = "${local.vm_name}.qcow2"
   format           = "qcow2"
   disk_size        = var.disk_size
 
-  accelerator = "kvm"
+  accelerator = var.accelerator
   memory      = 4096
   cpus        = 2
   headless    = true
+  net_device   = "user"
 
-  ssh_username = "ubuntu"
-  # Matches images/ubuntu-node/cloud-init/user-data (build-time only).
-  ssh_password = "virtfoundry-build"
-  ssh_timeout  = "45m"
+  ssh_username           = "ubuntu"
+  ssh_password           = "virtfoundry-build"
+  ssh_timeout            = "45m"
+  ssh_handshake_attempts = 100
+
   cd_files = [
     "${path.root}/cloud-init/user-data",
     "${path.root}/cloud-init/meta-data",
   ]
   cd_label = "cidata"
 
-  shutdown_command       = "echo virtfoundry-build | sudo -S shutdown -P now"
-  ssh_handshake_attempts = 100
+  shutdown_command = "echo virtfoundry-build | sudo -S shutdown -P now"
+  shutdown_timeout = "5m"
 }
 
 build {

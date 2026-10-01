@@ -53,18 +53,20 @@ jobs:
       - name: Packer build
         working-directory: images/ubuntu-node
         run: |
-          mkdir -p ../../out/ubuntu-node
-          # Nested virt on GHA is best-effort; fall back to tcg if kvm missing.
+          set -euo pipefail
+          # Packer QEMU requires the output directory to NOT exist.
+          rm -rf ../../out/ubuntu-node
+          ACCEL=kvm
           if [ ! -e /dev/kvm ]; then
-            echo "No /dev/kvm — editing accelerator to none for this runner"
-            # Packer qemu: accelerator none uses tcg (slow but works)
-            sed -i 's/accelerator = "kvm"/accelerator = "none"/' ubuntu-node.pkr.hcl
+            echo "No /dev/kvm — using accelerator=tcg (slow)"
+            ACCEL=tcg
           fi
           packer build \
             -var "kubernetes_version=${KUBERNETES_VERSION}" \
             -var "output_directory=../../out/ubuntu-node" \
+            -var "accelerator=${ACCEL}" \
             ubuntu-node.pkr.hcl
-
+          ls -lh ../../out/ubuntu-node/
       - name: Upload qcow2 artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:

@@ -10,7 +10,7 @@ init:
 	packer init images/ubuntu-node/
 
 build-ubuntu-node: init
-	mkdir -p $(OUT)
+	rm -rf $(OUT)
 	cd images/ubuntu-node && packer build \
 		-var "kubernetes_version=$(KUBERNETES_VERSION)" \
 		-var "output_directory=../../$(OUT)" \
