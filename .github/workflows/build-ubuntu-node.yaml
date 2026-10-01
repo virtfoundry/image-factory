@@ -43,7 +43,8 @@ jobs:
         run: |
           sudo apt-get update -y
           # xorriso: Packer qemu cd_files (cloud-init cidata)
-          sudo apt-get install -y qemu-system-x86 qemu-utils xorriso
+          # ovmf: Ubuntu cloudimg UEFI (firmware = "efi")
+          sudo apt-get install -y qemu-system-x86 qemu-utils xorriso ovmf
 
       - name: Packer init + validate
         working-directory: images/ubuntu-node
@@ -53,6 +54,8 @@ jobs:
 
       - name: Packer build
         working-directory: images/ubuntu-node
+        env:
+          PACKER_LOG: "1"
         run: |
           set -euo pipefail
           # Packer QEMU requires the output directory to NOT exist.

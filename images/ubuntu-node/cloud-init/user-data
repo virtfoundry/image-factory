@@ -6,6 +6,10 @@ users:
     shell: /bin/bash
     lock_passwd: false
     plain_text_passwd: "virtfoundry-build"
+chpasswd:
+  list: |
+    ubuntu:virtfoundry-build
+  expire: false
 ssh_pwauth: true
 package_update: true
 packages:
