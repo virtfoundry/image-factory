@@ -78,9 +78,13 @@ make containerdisk-ubuntu-node  # docker build (no push)
 
 ## Pin policy
 
-- Kubernetes components: **single patch version** per image tag (MVP VKS: one version, e.g. `1.31.4`)
-- Publish by **digest**; Templates must not float on `:latest`
-- Allowlist in VirtFoundry: add `ghcr.io/virtfoundry/` (chart/operator values)
+See **[VERSIONS.md](./VERSIONS.md)** for the live evaluation checklist and snapshot.
+
+**Always re-evaluate** Kubernetes + CAPI + Kamaji before changing defaults. Homelab today is **1.36.x**; do not pin ancient minors.
+
+- Default node image: **1.36.5** (2026-10-01)
+- Publish by **digest**; no `:latest`
+- Allowlist: `ghcr.io/virtfoundry/` in chart/operator values
 
 ## Homelab smoke (after first digest)
 
