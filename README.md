@@ -78,7 +78,7 @@ make containerdisk-ubuntu-node  # docker build (no push)
 
 ## Pin policy
 
-See **[VERSIONS.md](./VERSIONS.md)** for the live evaluation checklist and snapshot.
+See **[VERSIONS.md](./VERSIONS.md)** for the live evaluation checklist and snapshot. Official **node ↔ template ↔ product** mapping: **[COMPATIBILITY.md](./COMPATIBILITY.md)**.
 
 **Always re-evaluate** Kubernetes + CAPI + Kamaji before changing defaults. Homelab today is **1.36.x**; do not pin ancient minors.
 
