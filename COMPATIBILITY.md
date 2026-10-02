@@ -8,7 +8,8 @@ Pin source of truth for component evaluation: **[VERSIONS.md](./VERSIONS.md)**. 
 
 | Product / Date | node-ubuntu tag + digest | Template seed name | kubernetes_version | Kamaji max | Notes (core / helm / TF) |
 |----------------|--------------------------|--------------------|--------------------|------------|---------------------------|
-| **2026-10-01** — first `1.36.5` publish | `ghcr.io/virtfoundry/node-ubuntu:1.36.5@sha256:f7aeb6ee99dfebac922d3c64d443dd01e961deb1eff3446389bd4cd014b2d229` | `ubuntu-node-1-36-5` | `v1.36.5` | **v1.37.0** (`KubeadmVersion` in Kamaji 26.9.5-edge) | **core** seed in `internal/platform/store/seed.go` @ **0.9.0**; **helm** `virtfoundry` chart **0.9.0**; **TF** provider registry **~> 0.3** (VKS resources not yet — use core API/UI). CI: [36887643801](https://github.com/virtfoundry/vks-image-factory/actions/runs/36887643801). |
+| **2026-10-01** — layout fix republish | `ghcr.io/virtfoundry/node-ubuntu:1.36.5@sha256:0189707919212fe3a104d64fa31b88d1752c39eb94c3044bce1a3242da8a0c02` | `ubuntu-node-1-36-5` | `v1.36.5` | **v1.37.0** | **Use this.** `/disk/disk.img` regular file. CI: [36903066723](https://github.com/virtfoundry/vks-image-factory/actions/runs/36903066723) after [#10](https://github.com/virtfoundry/vks-image-factory/pull/10). |
+| **2026-10-01** — first `1.36.5` publish (**broken**) | `…@sha256:f7aeb6ee99dfebac922d3c64d443dd01e961deb1eff3446389bd4cd014b2d229` | `ubuntu-node-1-36-5` | `v1.36.5` | **v1.37.0** | **Do not use.** OCI has `/disk/ubuntu-node.qcow2/` directory → KubeVirt qemu-img SyncFailed. CI: [36887643801](https://github.com/virtfoundry/vks-image-factory/actions/runs/36887643801). |
 
 ## How to add a row
 
