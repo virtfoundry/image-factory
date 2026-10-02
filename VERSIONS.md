@@ -1,5 +1,7 @@
 # Versions — evaluated 2026-10-01
 
+**Compatibility matrix:** [COMPATIBILITY.md](./COMPATIBILITY.md) — product ↔ node digest ↔ Template seed ↔ Kamaji max ↔ core/helm/TF notes.
+
 Do **not** copy old pins blindly. Re-run this checklist before changing defaults.
 
 ## Checklist
