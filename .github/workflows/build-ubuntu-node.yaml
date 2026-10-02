@@ -122,11 +122,27 @@ jobs:
         run: |
           set -euo pipefail
           DISK=$(ls out/ubuntu-node/*.qcow2 | head -1)
+          # Never leave a directory named ubuntu-node.qcow2 (cp into dir → broken OCI layout).
+          rm -rf containerdisk/ubuntu-node.qcow2
+          test -f "$DISK"
           cp "$DISK" containerdisk/ubuntu-node.qcow2
+          test -f containerdisk/ubuntu-node.qcow2
           IMAGE="ghcr.io/virtfoundry/node-ubuntu:${KUBERNETES_VERSION}"
           docker build -t "$IMAGE" -f containerdisk/Dockerfile \
             --build-arg DISK_SRC=ubuntu-node.qcow2 containerdisk/
+          # Gate: KubeVirt needs a regular file at /disk/disk.img (not a directory).
+          CID=$(docker create "$IMAGE" /disk/disk.img)
+          LAYOUT=$(docker export "$CID" | tar -tvf - | grep ' disk/' || true)
+          docker rm "$CID" >/dev/null
+          echo "$LAYOUT"
+          echo "$LAYOUT" | grep -E '^-rw.* disk/disk\.img$' >/dev/null \
+            || { echo "FATAL: expected regular file disk/disk.img"; exit 1; }
+          if echo "$LAYOUT" | grep -E '^d.* disk/ubuntu-node\.qcow2' >/dev/null; then
+            echo "FATAL: disk/ubuntu-node.qcow2 must not be a directory"
+            exit 1
+          fi
           docker push "$IMAGE"
           DIGEST=$(docker buildx imagetools inspect "$IMAGE" --format '{{json .Manifest.Digest}}' 2>/dev/null | tr -d '"' || true)
           echo "Pushed $IMAGE"
           echo "Record digest in Template allowlist: ${IMAGE}@${DIGEST:-see-ghcr}"
+          rm -f containerdisk/ubuntu-node.qcow2

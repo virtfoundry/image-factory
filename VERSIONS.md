@@ -21,7 +21,7 @@ Do **not** copy old pins blindly. Re-run this checklist before changing defaults
 | Kubernetes **1.36 latest** | **v1.36.5** | |
 | Homelab management cluster | **v1.36.3** | server |
 | **VKS node image default** | **1.36.5** | Same minor as host; ≤ Kamaji max |
-| **Published containerDisk** | `ghcr.io/virtfoundry/node-ubuntu:1.36.5@sha256:f7aeb6ee99dfebac922d3c64d443dd01e961deb1eff3446389bd4cd014b2d229` | CI run 36887643801 (2026-10-01) |
+| **Published containerDisk** | `ghcr.io/virtfoundry/node-ubuntu:1.36.5@sha256:0189707919212fe3a104d64fa31b88d1752c39eb94c3044bce1a3242da8a0c02` | CI run 36903066723 (2026-10-01) — `/disk/disk.img` regular file. **Do not use** `f7aeb6ee…` (broken layout: `/disk/ubuntu-node.qcow2/` directory). |
 | Cluster API | **v1.14.2** | Mgmt `v1.33–v1.37`, Workload `v1.31–v1.37` |
 | Kamaji (edge) | **26.9.5-edge** | Code: `KubeadmVersion = v1.37.0` |
 | CAPCP Kamaji | **v0.21.0** | `clusterctl init --control-plane kamaji` |
